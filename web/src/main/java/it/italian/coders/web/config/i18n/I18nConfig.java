@@ -23,7 +23,7 @@ public class I18nConfig    extends WebMvcConfigurerAdapter {
     public ReloadableResourceBundleMessageSource  errorMessageSource() {
         ReloadableResourceBundleMessageSource messageSource =
                 new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:/i18n/errors/messages");
+        messageSource.setBasenames("classpath:/i18n/errors/messages","classpath:/i18n/errors/validations");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }

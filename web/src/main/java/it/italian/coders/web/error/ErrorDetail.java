@@ -19,7 +19,7 @@ public class ErrorDetail {
 
     private String exception;
 
-    private int subcode;
+    private int code;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, List<ValidationError>> validationErrors ;
@@ -66,12 +66,12 @@ public class ErrorDetail {
         this.exception = exception;
     }
 
-    public int getSubcode() {
-        return subcode;
+    public int getCode() {
+        return code;
     }
 
-    public void setSubcode(int subcode) {
-        this.subcode = subcode;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public Map<String, List<ValidationError>> getValidationErrors() {
@@ -101,7 +101,7 @@ public class ErrorDetail {
         private long timeStamp;
         private String developerMessage;
         private String exception;
-        private int subcode;
+        private int code;
         private Map<String, List<ValidationError>> validationErrors ;
         private Map<String, List<ConstrainctError>> constrainctErrors ;
 
@@ -138,8 +138,8 @@ public class ErrorDetail {
             return this;
         }
 
-        public Builder subcode(int subcode) {
-            this.subcode = subcode;
+        public Builder code(int code) {
+            this.code = code;
             return this;
         }
 
@@ -161,7 +161,7 @@ public class ErrorDetail {
             errorDetail.setTimeStamp(timeStamp);
             errorDetail.setDeveloperMessage(developerMessage);
             errorDetail.setException(exception);
-            errorDetail.setSubcode(subcode);
+            errorDetail.setCode(code);
             errorDetail.setValidationErrors(validationErrors);
             errorDetail.setConstrainctErrors(constrainctErrors);
             return errorDetail;

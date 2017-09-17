@@ -1,4 +1,4 @@
-package it.italian.coders.web.controller;
+package it.italian.coders.web.controller.fake;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
