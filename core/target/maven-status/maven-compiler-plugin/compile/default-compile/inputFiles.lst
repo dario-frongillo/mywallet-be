@@ -1,0 +1,7 @@
+/home/dario/dev/workspace/social_project/italian-coders-backend-rest-starter/core/src/main/java/it/italian/coders/service/authentication/impl/UserManagerImpl.java
+/home/dario/dev/workspace/social_project/italian-coders-backend-rest-starter/core/src/main/java/it/italian/coders/model/BaseDocument.java
+/home/dario/dev/workspace/social_project/italian-coders-backend-rest-starter/core/src/main/java/it/italian/coders/exception/RestException.java
+/home/dario/dev/workspace/social_project/italian-coders-backend-rest-starter/core/src/main/java/it/italian/coders/service/authentication/UserManager.java
+/home/dario/dev/workspace/social_project/italian-coders-backend-rest-starter/core/src/main/java/it/italian/coders/dao/authentication/UserDao.java
+/home/dario/dev/workspace/social_project/italian-coders-backend-rest-starter/core/src/main/java/it/italian/coders/model/authentication/Authorities.java
+/home/dario/dev/workspace/social_project/italian-coders-backend-rest-starter/core/src/main/java/it/italian/coders/model/authentication/User.java

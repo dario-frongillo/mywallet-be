@@ -1,0 +1,9 @@
+it/italian/coders/service/authentication/impl/UserManagerImpl.class
+it/italian/coders/service/authentication/UserManager.class
+it/italian/coders/model/authentication/User$1.class
+it/italian/coders/model/authentication/Authorities.class
+it/italian/coders/model/authentication/User.class
+it/italian/coders/model/authentication/User$Builder.class
+it/italian/coders/exception/RestException.class
+it/italian/coders/dao/authentication/UserDao.class
+it/italian/coders/model/BaseDocument.class

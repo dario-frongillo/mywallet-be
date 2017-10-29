@@ -5,15 +5,19 @@ package it.italian.coders.authentication.jwt;
  * Created by dario on 09/07/2017.
  */
 
+import it.italian.coders.authentication.social.SocialEnum;
+import lombok.Data;
+
 import java.io.Serializable;
 
-
+@Data
 public class  JwtAuthenticationRequest implements Serializable {
 
     private static final long serialVersionUID = -8445943548965154778L;
 
     private String username;
     private String password;
+    private SocialEnum socialAuthentication;
 
     public JwtAuthenticationRequest() {
         super();
@@ -24,19 +28,6 @@ public class  JwtAuthenticationRequest implements Serializable {
         this.setPassword(password);
     }
 
-    public String getUsername() {
-        return this.username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
