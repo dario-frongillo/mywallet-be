@@ -6,6 +6,7 @@ import it.italian.coders.authentication.jwt.JwtAuthenticationRequest;
 import it.italian.coders.authentication.jwt.JwtTokenUtil;
 import it.italian.coders.authentication.jwt.JwtUser;
 import it.italian.coders.model.authentication.User;
+import it.italian.coders.model.social.SocialEnum;
 import it.italian.coders.service.authentication.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,7 +88,11 @@ public class AuthenticationController {
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device, HttpServletRequest request) throws AuthenticationException {
-
+        User user = null;
+        
+        if(authenticationRequest.getSocialAuthentication()!=null && authenticationRequest.getSocialAuthentication() != SocialEnum.None){
+            user = userManager.findByUsername(authenticationRequest.getUsername(), authenticationRequest.getSocialAuthentication());
+        }
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken( authenticationRequest.getUsername(),
@@ -95,27 +100,22 @@ public class AuthenticationController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        if(user == null){
+            user = userManager.findByUsername(authenticationRequest.getUsername(), authenticationRequest.getSocialAuthentication());
+        }
+
+        if(!user.isEnabled()){
+            //throw new UserDisabledException();
+        }
+
         // Reload password post-security so we can generate token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails, device);
 
 
-        User user = userManager.findByUsername(authenticationRequest.getUsername());
-
-
-        /*
-        if(!user.isEnabled()){
-            throw new UserDisabledException();
-        }
-        get image url http://graph.facebook.com/1886821314979753/picture?type=square
-        */
-
 
         List<String> list = user.getAuthorities();
-        Facebook facebook = new FacebookTemplate("EAAFJSPdrzqoBALkDtCbg3cL7vKwBSrDHhPjZAtWFQ3v7ZCWeefYuyTEBN1ir0eLAbsGhUNtamy1UN9cZCZBV2NbUHoTdRZCeKtZCjQNlhjZClZBd0rHEdmsbzwF87pSlB3xQ5wUyz0Pskt1l1QcVz9wPXIXyQxb3WAKwQLEes7C4YFxnB9UQt05kvEPItJ9jrcPlbrbZANONyR1ZAVvkrVEKsgiL3O2dyuPX4ZD", "frongilloprova");
-        boolean b =facebook.isAuthorized();
-        org.springframework.social.facebook.api.User profile = facebook.userOperations().getUserProfile();
-        String [] fields = { "id", "email",  "first_name", "last_name" };
+
         return ResponseEntity.ok(new JwtAuthenticationResponse(token, user, list, request.getRemoteAddr()));
 
 

@@ -1,5 +1,7 @@
 package it.italian.coders.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
@@ -8,7 +10,8 @@ import java.util.Date;
 /**
  * Created by Dario on 7/7/2017.
  */
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseDocument {
     @Version
     private Long version;

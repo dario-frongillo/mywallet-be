@@ -5,7 +5,7 @@ package it.italian.coders.authentication.jwt;
  * Created by dario on 09/07/2017.
  */
 
-import it.italian.coders.authentication.social.SocialEnum;
+import it.italian.coders.model.social.SocialEnum;
 import lombok.Data;
 
 import java.io.Serializable;

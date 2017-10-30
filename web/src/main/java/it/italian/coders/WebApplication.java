@@ -2,6 +2,7 @@ package it.italian.coders;
 
 import it.italian.coders.model.authentication.Authorities;
 import it.italian.coders.model.authentication.User;
+import it.italian.coders.model.social.SocialEnum;
 import it.italian.coders.service.authentication.UserManager;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +31,7 @@ public class WebApplication {
     public CommandLineRunner loadData(UserManager userManager) {
         return (args) -> {
 
-            User user=userManager.findByUsername("admin");
+            User user=userManager.findByUsername("admin", SocialEnum.None);
 
             if(user == null){
                 List<String> authorities=new ArrayList<String>();
