@@ -29,18 +29,8 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public User findByUsername(String username, SocialEnum socialEnum) {
-        User user = null;
-        switch (socialEnum){
-            case None:
-                user = userDao.findByUsername(username);
-                break;
-            case Facebook:
-                user = facebookSocialManager.findByUserByAccessToken(username,true);
-                break;
-
-        }
-        return user;
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
     }
 
     @Override

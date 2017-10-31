@@ -1,6 +1,7 @@
 package it.italian.coders.service.social.facebook.impl;
 
 import it.italian.coders.dao.authentication.UserDao;
+import it.italian.coders.model.authentication.Authorities;
 import it.italian.coders.model.authentication.User;
 import it.italian.coders.model.social.SocialUtils;
 import it.italian.coders.service.social.facebook.FacebookSocialManager;
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+
+import static it.italian.coders.model.social.SocialUtils.USER_SOCIAL_PASSWORD;
 
 @Service
 public class FacebookSocialManagerImpl implements FacebookSocialManager {
@@ -26,6 +32,9 @@ public class FacebookSocialManagerImpl implements FacebookSocialManager {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostConstruct
     private void init() {
@@ -57,13 +66,10 @@ public class FacebookSocialManagerImpl implements FacebookSocialManager {
             ex.printStackTrace();
         }
     }
-    @Override
-    public User findByUserByAccessToken(String accessToken) {
-        return findByUserByAccessToken(accessToken, false);
-    }
+
 
     @Override
-    public User findByUserByAccessToken(String accessToken, boolean autoInsert) {
+    public User updInsSocialUser(String accessToken) {
         Facebook facebook = new FacebookTemplate(accessToken, appNameSpace);
         org.springframework.social.facebook.api.User profile = null;
 
@@ -72,12 +78,15 @@ public class FacebookSocialManagerImpl implements FacebookSocialManager {
         }catch (Exception e){
             return null;
         }
+        List<String> authorities=new ArrayList<String>();
+        authorities.add(Authorities.ROLE_ACCESS.name());
 
         User user =userDao.findByUsername(profile.getId());
-
-        if(user == null && autoInsert){
+        if(user == null){
             user = User.newBuilder()
                     .username(profile.getId())
+                    .authorities(authorities)
+                    .password(passwordEncoder.encode(USER_SOCIAL_PASSWORD))
                     .firstname(profile.getFirstName())
                     .lastname(profile.getLastName())
                     .gender(profile.getGender())
@@ -86,6 +95,13 @@ public class FacebookSocialManagerImpl implements FacebookSocialManager {
                     .enabled(true)
                     .build();
 
+            user = userDao.save(user);
+        }else{
+            user.setFirstname(profile.getFirstName());
+            user.setLastname(profile.getLastName());
+            user.setGender(profile.getGender());
+            user.setFullname(profile.getName());
+            user.setProfileImageUrl(SocialUtils.getFacebookProfileImageUrl(profile.getId()));
             user = userDao.save(user);
         }
 

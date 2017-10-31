@@ -5,9 +5,11 @@ import it.italian.coders.authentication.dto.JwtAuthenticationResponse;
 import it.italian.coders.authentication.jwt.JwtAuthenticationRequest;
 import it.italian.coders.authentication.jwt.JwtTokenUtil;
 import it.italian.coders.authentication.jwt.JwtUser;
+import it.italian.coders.authentication.jwt.JwtUserFactory;
 import it.italian.coders.model.authentication.User;
 import it.italian.coders.model.social.SocialEnum;
 import it.italian.coders.service.authentication.UserManager;
+import it.italian.coders.service.social.SocialManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -53,46 +55,20 @@ public class AuthenticationController {
     @Autowired
     private UserDetailsService userDetailsService;
 
-
-
-    @PostConstruct
-    private void init() {
-        try {
-            String[] fieldsToMap = { "id", "about", "age_range", "birthday",
-                    "context", "cover", "currency", "devices", "education",
-                    "email", "favorite_athletes", "favorite_teams",
-                    "first_name", "gender", "hometown", "inspirational_people",
-                    "installed", "install_type", "is_verified", "languages",
-                    "last_name", "link", "locale", "location", "meeting_for",
-                    "middle_name", "name", "name_format", "political",
-                    "quotes", "payment_pricepoints", "relationship_status",
-                    "religion", "security_settings", "significant_other",
-                    "sports", "test_group", "timezone", "third_party_id",
-                    "updated_time", "verified", "viewer_can_send_gift",
-                    "website", "work" };
-
-            Field field = Class.forName(
-                    "org.springframework.social.facebook.api.UserOperations")
-                    .getDeclaredField("PROFILE_FIELDS");
-            field.setAccessible(true);
-
-            Field modifiers = field.getClass().getDeclaredField("modifiers");
-            modifiers.setAccessible(true);
-            modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-            field.set(null, fieldsToMap);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    @Autowired
+    private SocialManager socialManager;
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device, HttpServletRequest request) throws AuthenticationException {
         User user = null;
-        
+
+        /*
+         * Each login the user data must be refreshed with the data of the relative social account
+         */
         if(authenticationRequest.getSocialAuthentication()!=null && authenticationRequest.getSocialAuthentication() != SocialEnum.None){
-            user = userManager.findByUsername(authenticationRequest.getUsername(), authenticationRequest.getSocialAuthentication());
+            user = socialManager.updInsSocialUser(authenticationRequest.getSocialAuthentication(),authenticationRequest.getUsername(),authenticationRequest.getSocialAccessToken());
         }
+
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken( authenticationRequest.getUsername(),
@@ -101,18 +77,24 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         if(user == null){
-            user = userManager.findByUsername(authenticationRequest.getUsername(), authenticationRequest.getSocialAuthentication());
+
+            if(authenticationRequest.getUsername().contains("@")){
+                user = userManager.findByEmail(authenticationRequest.getUsername());
+            }else{
+                user = userManager.findByUsernameIgnoreCase(authenticationRequest.getUsername());
+            }
+
+
         }
 
         if(!user.isEnabled()){
             //throw new UserDisabledException();
         }
 
-        // Reload password post-security so we can generate token
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+
+
+        final UserDetails userDetails = JwtUserFactory.create(user);
         final String token = jwtTokenUtil.generateToken(userDetails, device);
-
-
 
         List<String> list = user.getAuthorities();
 

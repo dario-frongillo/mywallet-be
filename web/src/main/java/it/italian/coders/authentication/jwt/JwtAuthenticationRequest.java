@@ -18,15 +18,7 @@ public class  JwtAuthenticationRequest implements Serializable {
     private String username;
     private String password;
     private SocialEnum socialAuthentication;
-
-    public JwtAuthenticationRequest() {
-        super();
-    }
-
-    public JwtAuthenticationRequest(String username, String password) {
-        this.setUsername(username);
-        this.setPassword(password);
-    }
+    private String socialAccessToken;
 
 
 
