@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar web/target/*.jar  -Dserver.port=$PORT 
+web: java -Dserver.port=$PORT  $JAVA_OPTS -jar web/target/*.jar  
