@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"it.italian.coders"})
@@ -39,13 +40,15 @@ public class WebApplication {
     private @Autowired
     MongoDbFactory mongoDbFactory;
 
+    /*
     @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer() {
         return (container -> {
+            Map<String,String> pp =System.getenv();
             container.setPort(Integer.valueOf(System.getenv("PORT")));
         });
     }
-
+*/
     @Bean
     public CommandLineRunner loadData(UserManager userManager) {
         return (args) -> {
