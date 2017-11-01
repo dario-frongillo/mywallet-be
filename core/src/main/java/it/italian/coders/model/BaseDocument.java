@@ -20,10 +20,8 @@ public class BaseDocument {
     private Long version;
 
     @CreatedDate
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date created;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private Date updated;
 

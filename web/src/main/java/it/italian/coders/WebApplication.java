@@ -1,6 +1,7 @@
 package it.italian.coders;
 
 import com.mongodb.Mongo;
+import it.italian.coders.dao.authentication.UserDao;
 import it.italian.coders.model.authentication.Authorities;
 import it.italian.coders.model.authentication.User;
 import it.italian.coders.model.social.SocialEnum;
@@ -18,9 +19,11 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"it.italian.coders"})
@@ -35,24 +38,23 @@ public class WebApplication {
     }
 
     private @Autowired
-    Mongo mongo;
+    UserDao userDao;
 
     private @Autowired
     MongoDbFactory mongoDbFactory;
 
-    /*
-    @Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
-        return (container -> {
-            Map<String,String> pp =System.getenv();
-            container.setPort(Integer.valueOf(System.getenv("PORT")));
-        });
+
+
+    @PostConstruct
+    void started() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
-*/
+
     @Bean
     public CommandLineRunner loadData(UserManager userManager) {
         return (args) -> {
            // mongo.dropDatabase(mongoDbFactory.getDb().getName());
+            userDao.deleteAll();
             User user=userManager.findByUsername("admin");
 
             if(user == null){
