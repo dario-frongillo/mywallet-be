@@ -5,11 +5,11 @@ it/italian/coders/authentication/jwt/JwtUser.class
 it/italian/coders/web/error/ValidationError.class
 it/italian/coders/authentication/jwt/JwtUserFactory.class
 it/italian/coders/authentication/dto/JwtAuthenticationResponse.class
-it/italian/coders/authentication/jwt/JwtUser$Builder.class
 it/italian/coders/web/config/i18n/SpringMessageSourceMessageInterpolator.class
 it/italian/coders/web/config/WebApplicationConfig.class
 it/italian/coders/web/controller/fake/Person.class
 it/italian/coders/authentication/jwt/JwtAuthenticationEntryPoint.class
+it/italian/coders/authentication/jwt/JwtUser$JwtUserBuilder.class
 it/italian/coders/authentication/jwt/JwtAuthenticationRequest.class
 it/italian/coders/web/config/i18n/SmartLocaleResolver.class
 it/italian/coders/authentication/config/WebSecurityConfig.class
@@ -20,6 +20,5 @@ it/italian/coders/authentication/controller/AuthenticationController.class
 it/italian/coders/authentication/jwt/JwtAuthenticationTokenFilter.class
 it/italian/coders/web/controller/fake/FakeController.class
 it/italian/coders/web/error/ErrorDetail$Builder.class
-it/italian/coders/authentication/jwt/JwtUser$1.class
 it/italian/coders/web/error/ConstrainctError.class
 it/italian/coders/authentication/jwt/JwtTokenUtil.class

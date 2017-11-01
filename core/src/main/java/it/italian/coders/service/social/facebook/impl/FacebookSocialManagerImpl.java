@@ -2,7 +2,9 @@ package it.italian.coders.service.social.facebook.impl;
 
 import it.italian.coders.dao.authentication.UserDao;
 import it.italian.coders.model.authentication.Authorities;
+import it.italian.coders.model.authentication.GenderEnum;
 import it.italian.coders.model.authentication.User;
+import it.italian.coders.model.social.SocialEnum;
 import it.italian.coders.model.social.SocialUtils;
 import it.italian.coders.service.social.facebook.FacebookSocialManager;
 import org.slf4j.Logger;
@@ -88,9 +90,10 @@ public class FacebookSocialManagerImpl implements FacebookSocialManager {
                     .authorities(authorities)
                     .password(passwordEncoder.encode(USER_SOCIAL_PASSWORD))
                     .firstname(profile.getFirstName())
+                    .socialEnum(SocialEnum.Facebook)
                     .lastname(profile.getLastName())
-                    .gender(profile.getGender())
-                    .fullname(profile.getName())
+                    .gender(profile.getGender()==null ? null : GenderEnum.fromSocialValue(profile.getGender()))
+                    .displayName(profile.getName())
                     .profileImageUrl(SocialUtils.getFacebookProfileImageUrl(profile.getId()))
                     .enabled(true)
                     .build();
@@ -99,8 +102,8 @@ public class FacebookSocialManagerImpl implements FacebookSocialManager {
         }else{
             user.setFirstname(profile.getFirstName());
             user.setLastname(profile.getLastName());
-            user.setGender(profile.getGender());
-            user.setFullname(profile.getName());
+            user.setGender(profile.getGender()==null ? null : GenderEnum.fromSocialValue(profile.getGender()));
+            user.setDisplayName(profile.getName());
             user.setProfileImageUrl(SocialUtils.getFacebookProfileImageUrl(profile.getId()));
             user = userDao.save(user);
         }

@@ -21,7 +21,7 @@ public final class JwtUserFactory {
                 .password(user.getPassword())
                 .email(user.getEmail())
                 .authorities(mapToGrantedAuthorities(user.getAuthorities()))
-                .enabled(user.isEnabled())
+                .enabled(user.isEnabled()&&!user.isResetPassword())
                 .build();
 
     }

@@ -41,8 +41,7 @@ public class WebApplication {
     @Bean
     public CommandLineRunner loadData(UserManager userManager) {
         return (args) -> {
-
-            mongo.dropDatabase(mongoDbFactory.getDb().getName());
+           // mongo.dropDatabase(mongoDbFactory.getDb().getName());
             User user=userManager.findByUsername("admin");
 
             if(user == null){

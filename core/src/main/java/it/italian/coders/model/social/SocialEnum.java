@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum SocialEnum {
-    None(0), Facebook(1), Gmail(2);
+    None(0), Facebook(1), Google(2);
 
     private Integer value;
 

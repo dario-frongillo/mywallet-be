@@ -3,6 +3,7 @@ package it.italian.coders.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.italian.coders.model.BaseDocument;
+import it.italian.coders.model.social.SocialEnum;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -38,30 +39,43 @@ public class User extends BaseDocument {
 
     private String lastname;
 
-    private String fullname;
+    private String displayName;
 
+    private SocialEnum socialEnum;
 
+    /*
+        Used to disable an user
+     */
     private boolean enabled=false;
+
+    /*
+        this field is set to true after password reset
+        in order to reject jwt to force a new login
+     */
+    private boolean isResetPassword=false;
+
+
 
     private List<String> authorities;
 
-    private String gender;
+    private GenderEnum gender;
 
     private String profileImageUrl;
 
     @Builder(builderMethodName = "newBuilder")
-    public User(Long version, Date created, Date updated, String username, String password, String email, String firstname, String lastname, boolean enabled, List<String> authorities, String gender,String fullname, String profileImageUrl) {
+    public User(Long version, Date created, Date updated, String username, String password, String email, String firstname, String lastname, String displayName, SocialEnum socialEnum, boolean enabled, boolean isResetPassword, List<String> authorities, GenderEnum gender, String profileImageUrl) {
         super(version, created, updated);
         this.username = username;
         this.password = password;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.displayName = displayName;
+        this.socialEnum = socialEnum;
         this.enabled = enabled;
+        this.isResetPassword = isResetPassword;
         this.authorities = authorities;
         this.gender = gender;
-        this.fullname =fullname;
         this.profileImageUrl = profileImageUrl;
     }
-
 }

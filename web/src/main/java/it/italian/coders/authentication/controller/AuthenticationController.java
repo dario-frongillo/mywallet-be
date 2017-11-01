@@ -6,12 +6,16 @@ import it.italian.coders.authentication.jwt.JwtAuthenticationRequest;
 import it.italian.coders.authentication.jwt.JwtTokenUtil;
 import it.italian.coders.authentication.jwt.JwtUser;
 import it.italian.coders.authentication.jwt.JwtUserFactory;
+import it.italian.coders.exception.UserDisabledException;
 import it.italian.coders.model.authentication.User;
 import it.italian.coders.model.social.SocialEnum;
 import it.italian.coders.service.authentication.UserManager;
 import it.italian.coders.service.social.SocialManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -58,10 +63,14 @@ public class AuthenticationController {
     @Autowired
     private SocialManager socialManager;
 
+    @Autowired
+    @Qualifier("errorMessageSource")
+    private ReloadableResourceBundleMessageSource messageSource;
+
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device, HttpServletRequest request) throws AuthenticationException {
         User user = null;
-
+        Locale locale = LocaleContextHolder.getLocale();
         /*
          * Each login the user data must be refreshed with the data of the relative social account
          */
@@ -88,7 +97,7 @@ public class AuthenticationController {
         }
 
         if(!user.isEnabled()){
-            //throw new UserDisabledException();
+            throw new UserDisabledException(messageSource.getMessage("UserDisabledException.title",null,locale));
         }
 
 

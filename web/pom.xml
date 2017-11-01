@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web</artifactId>
+    <artifactId>rest-starter</artifactId>
 
     <dependencies>
 
@@ -37,11 +37,8 @@
         <!-- https://mvnrepository.com/artifact/org.springframework.social/spring-social-facebook -->
         <!-- https://mvnrepository.com/artifact/org.springframework.social/spring-social-facebook -->
         <!-- https://mvnrepository.com/artifact/org.springframework.social/spring-social-facebook -->
-        <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-facebook</artifactId>
-            <version>2.0.3.RELEASE</version>
-        </dependency>
+
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
