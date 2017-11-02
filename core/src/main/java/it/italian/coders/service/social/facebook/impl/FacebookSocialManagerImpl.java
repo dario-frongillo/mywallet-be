@@ -94,6 +94,7 @@ public class FacebookSocialManagerImpl implements FacebookSocialManager {
                     .lastname(profile.getLastName())
                     .gender(profile.getGender()==null ? null : GenderEnum.fromSocialValue(profile.getGender()))
                     .displayName(profile.getName())
+                    .isSignUpConfirmed(true)
                     .profileImageUrl(SocialUtils.getFacebookProfileImageUrl(profile.getId()))
                     .enabled(true)
                     .build();

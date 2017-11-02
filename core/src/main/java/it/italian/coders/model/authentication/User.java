@@ -24,12 +24,12 @@ import java.util.List;
 public class User extends BaseDocument {
 
     @Id
-    @Size(min = 4, max = 30)
+    @Size(min = 4, max = 100)
     @NotNull
     private String username;
 
-
     @JsonIgnore
+    @NotNull
     private String password;
 
     @Email
@@ -42,29 +42,38 @@ public class User extends BaseDocument {
 
     private String displayName;
 
+    private GenderEnum gender;
+
+    private String profileImageUrl;
+
     private SocialEnum socialEnum;
 
     /*
-        Used to disable an user
+        When an user is created without social
+        authentication it occurs to confirm via
+        mail the signup
      */
-    private boolean enabled=false;
+    private boolean signUpConfirmed=false;
 
     /*
         this field is set to true after password reset
         in order to reject jwt to force a new login
      */
+
     private boolean isResetPassword=false;
 
+    /*
+      Used to disable an user
+   */
+    private boolean enabled=false;
 
 
     private List<String> authorities;
 
-    private GenderEnum gender;
 
-    private String profileImageUrl;
 
     @Builder(builderMethodName = "newBuilder")
-    public User(Long version, Date created, Date updated, String username, String password, String email, String firstname, String lastname, String displayName, SocialEnum socialEnum, boolean enabled, boolean isResetPassword, List<String> authorities, GenderEnum gender, String profileImageUrl) {
+    public User(Long version, Date created, Date updated, String username, String password, String email, String firstname, String lastname, String displayName, SocialEnum socialEnum, boolean isSignUpConfirmed, boolean isResetPassword, boolean enabled, List<String> authorities, GenderEnum gender, String profileImageUrl) {
         super(version, created, updated);
         this.username = username;
         this.password = password;
@@ -73,8 +82,9 @@ public class User extends BaseDocument {
         this.lastname = lastname;
         this.displayName = displayName;
         this.socialEnum = socialEnum;
-        this.enabled = enabled;
+        this.signUpConfirmed = isSignUpConfirmed;
         this.isResetPassword = isResetPassword;
+        this.enabled = enabled;
         this.authorities = authorities;
         this.gender = gender;
         this.profileImageUrl = profileImageUrl;

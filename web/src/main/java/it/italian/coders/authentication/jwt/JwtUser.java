@@ -18,7 +18,7 @@ public class JwtUser implements UserDetails {
     private  String email;
     private  List<? extends GrantedAuthority> authorities;
     private  boolean enabled;
-
+    private boolean signUpConfirmed;
 
     @Override
     public String getUsername() {
@@ -63,5 +63,11 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
+    public boolean isSignUpConfirmed() {
+        return signUpConfirmed;
+    }
 
+    public void setSignUpConfirmed(boolean signUpConfirmed) {
+        signUpConfirmed = signUpConfirmed;
+    }
 }

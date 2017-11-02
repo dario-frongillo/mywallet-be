@@ -43,8 +43,6 @@ public class WebApplication {
     private @Autowired
     MongoDbFactory mongoDbFactory;
 
-
-
     @PostConstruct
     void started() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));

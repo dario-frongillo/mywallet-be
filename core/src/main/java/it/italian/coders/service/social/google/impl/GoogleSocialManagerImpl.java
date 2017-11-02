@@ -48,6 +48,7 @@ public class GoogleSocialManagerImpl implements GoogleSocialManager{
                     .password(passwordEncoder.encode(USER_SOCIAL_PASSWORD))
                     .firstname(profile.getGivenName())
                     .lastname(profile.getFamilyName())
+                    .isSignUpConfirmed(true)
                     .gender(profile.getGender()==null ? null : GenderEnum.fromSocialValue(profile.getGender()))
                     .displayName(profile.getDisplayName())
                     .profileImageUrl(profile.getImageUrl())
