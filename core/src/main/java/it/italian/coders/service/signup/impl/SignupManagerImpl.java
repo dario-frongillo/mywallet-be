@@ -81,8 +81,10 @@ public class SignupManagerImpl implements SignupManager {
         verificationToken = verificationTokenDao.save(verificationToken);
         Map<String,String> mailParams = new HashMap<>();
         mailParams.put("activationUrl", getConfirmVerificationTokenUrl(user.getUsername(),verificationToken.getId()));
+        mailParams.put("displayName", user.getDisplayName());
+        mailParams.put("signature", "mySocial Staff");
 
-        mailService.sendMailByTemplate("dest@mail.com","subj", "signupMail",mailParams);
+        mailService.sendMailByTemplate(user.getEmail(),"subj", "signupMail",mailParams);
 
     }
 

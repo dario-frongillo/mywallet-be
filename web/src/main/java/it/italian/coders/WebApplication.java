@@ -14,10 +14,12 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -46,6 +48,16 @@ public class WebApplication {
     @PostConstruct
     void started() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+    @Bean
+    public TaskExecutor threadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(4);
+        executor.setMaxPoolSize(4);
+        executor.setThreadNamePrefix("task-thread");
+        executor.initialize();
+        return executor;
     }
 
     @Bean

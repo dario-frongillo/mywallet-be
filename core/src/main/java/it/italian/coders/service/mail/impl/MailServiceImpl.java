@@ -8,6 +8,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -39,13 +40,15 @@ public class MailServiceImpl implements MailService {
         }
     }
 
+    @Async
     public void sendMailByTemplate(String recipient, String subject, String template, Map<String,String> params) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             String content = mailContentBuilder.build(params,template);
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(recipient);
             messageHelper.setSubject(subject);
-            messageHelper.setText(content);
+            messageHelper.setText(content,true);
+
         };
         try {
             mailSender.send(messagePreparator);
