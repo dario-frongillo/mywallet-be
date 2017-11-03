@@ -22,10 +22,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"it.italian.coders"})
@@ -45,9 +42,13 @@ public class WebApplication {
     private @Autowired
     MongoDbFactory mongoDbFactory;
 
+
+
     @PostConstruct
     void started() {
+
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
     }
 
     @Bean

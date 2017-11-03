@@ -5,6 +5,7 @@ import it.italian.coders.model.social.SocialEnum;
 import it.italian.coders.service.social.SocialManager;
 import it.italian.coders.service.social.facebook.FacebookSocialManager;
 import it.italian.coders.service.social.google.GoogleSocialManager;
+import it.italian.coders.service.social.twitter.TwitterSocialManger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class SocialManagerImpl implements SocialManager{
     @Autowired
     GoogleSocialManager googleSocialManager;
 
+    @Autowired
+    TwitterSocialManger twitterSocialManger;
+
     @Override
     public User updInsSocialUser(SocialEnum socialEnum, String userId, String accessToken){
         User user = null;
@@ -26,6 +30,9 @@ public class SocialManagerImpl implements SocialManager{
                 break;
             case Google:
                 user = googleSocialManager.updInsSocialUser(accessToken);
+                break;
+            case Twitter:
+                user = twitterSocialManger.updInsSocialUser(accessToken);
                 break;
         }
 

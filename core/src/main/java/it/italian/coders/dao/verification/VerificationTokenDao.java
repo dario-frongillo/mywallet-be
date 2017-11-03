@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface VerificationTokenDao extends MongoRepository<VerificationToken, String> {
 
     VerificationToken findById(String username);
-
+    VerificationToken findByConfirmResetCode(String confirmResetCode);
 
 }

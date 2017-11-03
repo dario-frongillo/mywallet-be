@@ -5,6 +5,7 @@ import it.italian.coders.dao.authentication.UserDao;
 import it.italian.coders.exception.RestException;
 import it.italian.coders.model.authentication.SignUp;
 import it.italian.coders.model.authentication.User;
+import it.italian.coders.service.resetAccount.ResetAccountManager;
 import it.italian.coders.service.signup.SignupManager;
 import it.italian.coders.utility.LocalUtilsMessage;
 import org.slf4j.Logger;
@@ -31,11 +32,21 @@ public class SignUpController {
     @Autowired
     LocalUtilsMessage localUtilsMessage;
 
+    @Autowired
+    ResetAccountManager resetAccountManager;
+
     private final static Logger logger = LoggerFactory.getLogger(SignUpController.class);
 
     @RequestMapping(value = "public/v1/signup", method = RequestMethod.POST)
     public ResponseEntity<?> signup(@RequestBody @Valid SignUp signup, Device device, HttpServletRequest request) throws AuthenticationException {
         User user = userDao.findByUsernameIgnoreCase(signup.getUsername());
+        if(signup.getUsername().contains(" ")||signup.getUsername().contains("@")){
+            throw new RestException(HttpStatus.BAD_REQUEST,
+                    localUtilsMessage.getI18nMessage("SignUpController.InvalidUsername.title",null),
+                    localUtilsMessage.getI18nMessage("SignUpController.InvalidUsername.detail",new Object[] { signup.getUsername()}),
+                    0);
+        }
+
         if(user != null){
             throw new RestException(HttpStatus.BAD_REQUEST,
                                     localUtilsMessage.getI18nMessage("SignUpController.UserAlreadyExists.title",null),
@@ -58,7 +69,6 @@ public class SignUpController {
             logger.error("Error on confirm signup",ex);
             return ResponseEntity.ok(ex.getDetail());
         }
-
 
     }
 

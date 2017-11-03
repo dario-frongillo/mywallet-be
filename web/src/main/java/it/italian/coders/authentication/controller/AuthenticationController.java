@@ -76,6 +76,18 @@ public class AuthenticationController {
          */
         if(authenticationRequest.getSocialAuthentication()!=null && authenticationRequest.getSocialAuthentication() != SocialEnum.None){
             user = socialManager.updInsSocialUser(authenticationRequest.getSocialAuthentication(),authenticationRequest.getUsername(),authenticationRequest.getSocialAccessToken());
+        }else{
+            if(authenticationRequest.getUsername().contains("@")){
+                user = userManager.findByEmail(authenticationRequest.getUsername());
+            }else{
+                user = userManager.findByUsernameIgnoreCase(authenticationRequest.getUsername());
+            }
+
+            //in order to allow login after reset password
+            if(user.isResetPassword()){
+                user.setResetPassword(false);
+                user = userManager.save(user);
+            }
         }
 
         // Perform the security
@@ -84,17 +96,6 @@ public class AuthenticationController {
                         authenticationRequest.getPassword() ) );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        if(user == null){
-
-            if(authenticationRequest.getUsername().contains("@")){
-                user = userManager.findByEmail(authenticationRequest.getUsername());
-            }else{
-                user = userManager.findByUsernameIgnoreCase(authenticationRequest.getUsername());
-            }
-
-
-        }
 
         if(!user.isEnabled()){
             throw new UserDisabledException(messageSource.getMessage("UserDisabledException.title",null,locale));
