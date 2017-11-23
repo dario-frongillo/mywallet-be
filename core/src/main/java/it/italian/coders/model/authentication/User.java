@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class User extends BaseDocument {
 
     private String profileImageUrl;
 
-    private SocialEnum socialEnum;
+    private SocialEnum socialType;
 
     /*
         When an user is created without social
@@ -73,7 +72,7 @@ public class User extends BaseDocument {
 
 
     @Builder(builderMethodName = "newBuilder")
-    public User(Long version, Date created, Date updated, String username, String password, String email, String firstname, String lastname, String displayName, SocialEnum socialEnum, boolean isSignUpConfirmed, boolean isResetPassword, boolean enabled, List<String> authorities, GenderEnum gender, String profileImageUrl) {
+    public User(Long version, Date created, Date updated, String username, String password, String email, String firstname, String lastname, String displayName, SocialEnum socialType, boolean isSignUpConfirmed, boolean isResetPassword, boolean enabled, List<String> authorities, GenderEnum gender, String profileImageUrl) {
         super(version, created, updated);
         this.username = username;
         this.password = password;
@@ -81,7 +80,7 @@ public class User extends BaseDocument {
         this.firstname = firstname;
         this.lastname = lastname;
         this.displayName = displayName;
-        this.socialEnum = socialEnum;
+        this.socialType = socialType;
         this.signUpConfirmed = isSignUpConfirmed;
         this.isResetPassword = isResetPassword;
         this.enabled = enabled;

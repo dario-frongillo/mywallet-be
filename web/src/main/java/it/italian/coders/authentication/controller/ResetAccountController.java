@@ -42,7 +42,7 @@ public class ResetAccountController {
         if(user == null){
             throw new NoSuchEntityException();
         }
-        if(user.getSocialEnum()!= SocialEnum.None){
+        if(user.getSocialType()!= SocialEnum.None){
             throw new RestException(HttpStatus.BAD_REQUEST,
                     localUtilsMessage.getI18nMessage("ResetAccountController.UserIsSocial.notAllowed.title",null),
                     localUtilsMessage.getI18nMessage("ResetAccountController.UserIsSocial.notAllowed.detail",new Object[] { username}),
@@ -68,7 +68,7 @@ public class ResetAccountController {
         if(user == null){
             throw new NoSuchEntityException();
         }
-        if(user.getSocialEnum()!= SocialEnum.None){
+        if(user.getSocialType()!= SocialEnum.None){
             throw new RestException(HttpStatus.BAD_REQUEST,
                     localUtilsMessage.getI18nMessage("ResetAccountController.UserIsSocial.notAllowed.title",null),
                     localUtilsMessage.getI18nMessage("ResetAccountController.UserIsSocial.notAllowed.detail",new Object[] { username}),
