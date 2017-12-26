@@ -40,6 +40,7 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -67,8 +68,8 @@ public class AuthenticationController {
     @Qualifier("errorMessageSource")
     private ReloadableResourceBundleMessageSource messageSource;
 
-    @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device, HttpServletRequest request) throws AuthenticationException {
+    @RequestMapping(value = "public/v1/login", method = RequestMethod.POST)
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response, Device device, HttpServletRequest request) throws AuthenticationException {
         User user = null;
         Locale locale = LocaleContextHolder.getLocale();
         /*
@@ -83,11 +84,7 @@ public class AuthenticationController {
                 user = userManager.findByUsernameIgnoreCase(authenticationRequest.getUsername());
             }
 
-            //in order to allow login after reset password
-            if(user.isResetPassword()){
-                user.setResetPassword(false);
-                user = userManager.save(user);
-            }
+
         }
 
         // Perform the security
@@ -107,13 +104,13 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails, device);
 
         List<String> list = user.getAuthorities();
-
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token, user, list, request.getRemoteAddr()));
+        response.setHeader(tokenHeader,token);
+        return ResponseEntity.ok(new JwtAuthenticationResponse( user));
 
 
     }
 
-    @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
+    @RequestMapping(value = "private/v1/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String username = jwtTokenUtil.getUsernameFromToken(token);
@@ -121,7 +118,7 @@ public class AuthenticationController {
         String refreshedToken = jwtTokenUtil.refreshToken(token);
         User currentUser = userManager.findByUsernameIgnoreCase(user.getUsername());
         List<String> list = currentUser.getAuthorities();
-        return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken,currentUser,list,request.getRemoteAddr()));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(currentUser));
 
     }
 

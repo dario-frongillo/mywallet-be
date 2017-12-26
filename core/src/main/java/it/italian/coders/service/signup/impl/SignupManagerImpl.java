@@ -13,6 +13,7 @@ import it.italian.coders.service.mail.MailService;
 import it.italian.coders.service.signup.SignupManager;
 import it.italian.coders.utility.Constants;
 import it.italian.coders.utility.LocalUtilsMessage;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.apache.commons.lang3.LocaleUtils;
+
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -64,15 +67,17 @@ public class SignupManagerImpl implements SignupManager {
 
     }
 
-    public void sendConfirmSignMail(User user){
+
+    public void sendConfirmSignMail(User user, HttpServletRequest request){
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Timestamp(cal.getTime().getTime()));
         cal.add(Calendar.MINUTE, tokenExpiration);
         Date expiration =  new Date(cal.getTime().getTime());
+        String code = RandomStringUtils.randomAlphabetic(5);
 
         VerificationToken verificationToken = VerificationToken.newBuilder()
                                                         .expiryDate(expiration)
-                                                        .id(UUID.randomUUID().toString())
+                                                        .id(code)
                                                         .username(user.getUsername())
                                                         .status(VerificationStatusEnum.WAITING)
                                                         .type(VerificationTypeEnum.Signup)
@@ -82,11 +87,13 @@ public class SignupManagerImpl implements SignupManager {
         Map<String,String> mailParams = new HashMap<>();
         mailParams.put("activationUrl", getConfirmVerificationTokenUrl(user.getUsername(),verificationToken.getId()));
         mailParams.put("displayName", user.getDisplayName());
-        mailParams.put("signature", "mySocial Staff");
+        mailParams.put("signature", "Lo Staff di myWallet");
+        mailParams.put("code", code);
 
         mailService.sendMailByTemplate(user.getEmail(),"subj", "signupMail",mailParams);
 
     }
+
 
     @Override
     public void confirmSignup(String language, String userIn, String tokenIdIn) {
@@ -131,7 +138,24 @@ public class SignupManagerImpl implements SignupManager {
     }
 
     @Override
-    public User signupUser(SignUp signUp) {
+    public User signupUser(SignUp signUp, HttpServletRequest request) {
+        String firstname="",lastname="";
+        String displayName= signUp.getUsername();
+
+        if(!StringUtils.isEmpty(signUp.getFirstname())){
+            firstname=signUp.getFirstname();
+        }
+
+        if(!StringUtils.isEmpty(signUp.getLastname())){
+            lastname=signUp.getLastname();
+        }
+
+        if(!StringUtils.isEmpty(firstname)){
+            displayName = firstname;
+            if(!StringUtils.isEmpty(lastname)){
+                displayName += " "+lastname;
+            }
+        }
 
 
         User user = User.newBuilder()
@@ -142,14 +166,14 @@ public class SignupManagerImpl implements SignupManager {
                         .isSignUpConfirmed(false)
                         .firstname(signUp.getFirstname())
                         .lastname(signUp.getLastname())
-                        .displayName(StringUtils.isEmpty(signUp.getDisplayName()) ? signUp.getFirstname()+" "+signUp.getLastname() : signUp.getDisplayName())
+                        .displayName(displayName)
                         .gender(signUp.getGender())
                         .profileImageUrl(signUp.getProfileImageUrl())
-                        .socialEnum(SocialEnum.None)
+                        .socialType(SocialEnum.None)
                         .authorities(Constants.DEFAUL_AUTHORITIES)
                         .build();
 
-        sendConfirmSignMail(user);
+        sendConfirmSignMail(user,request);
         return userDao.save(user);
     }
 }

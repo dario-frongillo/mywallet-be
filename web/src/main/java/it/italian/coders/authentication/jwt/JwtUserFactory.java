@@ -20,9 +20,8 @@ public final class JwtUserFactory {
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .email(user.getEmail())
-                .signUpConfirmed(user.isSignUpConfirmed())
                 .authorities(mapToGrantedAuthorities(user.getAuthorities()))
-                .enabled(user.isEnabled()&&!user.isResetPassword())
+                .enabled(user.isEnabled())
                 .build();
 
     }

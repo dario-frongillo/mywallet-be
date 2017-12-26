@@ -49,7 +49,7 @@ public class TwitterSocialMangerImpl implements TwitterSocialManger {
                     .password(passwordEncoder.encode(USER_SOCIAL_PASSWORD))
                     .firstname(profile.getName())
                     .lastname("")
-                    .socialEnum(SocialEnum.Twitter)
+                    .socialType(SocialEnum.Twitter)
                     .gender(GenderEnum.Others)
                     .displayName(profile.getScreenName())
                     .isSignUpConfirmed(true)

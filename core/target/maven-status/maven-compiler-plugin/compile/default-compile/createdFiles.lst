@@ -13,6 +13,7 @@ it\italian\coders\model\verification\VerificationStatusEnum.class
 it\italian\coders\service\authentication\UserManager.class
 it\italian\coders\service\signup\SignupManager.class
 it\italian\coders\model\authentication\User.class
+it\italian\coders\model\group\Group$GroupBuilder.class
 it\italian\coders\service\authentication\impl\UserManagerImpl.class
 it\italian\coders\model\verification\VerificationTypeEnum.class
 it\italian\coders\service\social\facebook\FacebookSocialManager.class
@@ -23,6 +24,7 @@ it\italian\coders\model\social\SocialEnum.class
 it\italian\coders\service\social\twitter\TwitterSocialManger.class
 it\italian\coders\service\resetAccount\ResetAccountManager.class
 it\italian\coders\service\signup\impl\SignupManagerImpl.class
+it\italian\coders\model\group\Group.class
 it\italian\coders\service\social\impl\SocialManagerImpl$1.class
 it\italian\coders\service\social\google\impl\GoogleSocialManagerImpl.class
 it\italian\coders\service\social\twitter\impl\TwitterSocialMangerImpl.class

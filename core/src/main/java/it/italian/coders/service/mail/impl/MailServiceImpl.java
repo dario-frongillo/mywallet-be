@@ -3,6 +3,7 @@ package it.italian.coders.service.mail.impl;
 import it.italian.coders.service.mail.MailContentBuilder;
 import it.italian.coders.service.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -48,6 +49,7 @@ public class MailServiceImpl implements MailService {
             messageHelper.setTo(recipient);
             messageHelper.setSubject(subject);
             messageHelper.setText(content,true);
+            //messageHelper.addAttachment("pig_logo.png", new ClassPathResource("pig_logo.png"));
 
         };
         try {

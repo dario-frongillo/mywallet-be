@@ -28,7 +28,7 @@ public class WebApplicationConfig {
     }
 
 
-
+    @Primary
     @Bean
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

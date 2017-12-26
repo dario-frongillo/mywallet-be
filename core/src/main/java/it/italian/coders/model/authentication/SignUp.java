@@ -26,15 +26,15 @@ public class SignUp {
     @Email
     private String email;
 
-    @NotNull
+
     private String firstname;
 
-    @NotNull
+
     private String lastname;
 
     private String displayName;
 
-    @NotNull
+
     private GenderEnum gender;
 
     private String profileImageUrl;

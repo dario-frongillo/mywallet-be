@@ -13,18 +13,10 @@ public class JwtAuthenticationResponse implements Serializable {
 
     private static final long serialVersionUID = 1250166508152483573L;
 
-    private final String token;
     private User user;
-    private String workstation;
 
-    public JwtAuthenticationResponse(String token, User user, List<String> permissions, String workstation) {
-        this.token = token;
+    public JwtAuthenticationResponse( User user) {
         this.user=user;
-        this.workstation = workstation;
-    }
-
-    public String getToken() {
-        return this.token;
     }
 
     public User getUser() {
@@ -36,11 +28,4 @@ public class JwtAuthenticationResponse implements Serializable {
     }
 
 
-    public String getWorkstation() {
-        return workstation;
-    }
-
-    public void setWorkstation(String workstation) {
-        this.workstation = workstation;
-    }
 }

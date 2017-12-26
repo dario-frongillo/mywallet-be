@@ -54,12 +54,6 @@ public class User extends BaseDocument {
      */
     private boolean signUpConfirmed=false;
 
-    /*
-        this field is set to true after password reset
-        in order to reject jwt to force a new login
-     */
-
-    private boolean isResetPassword=false;
 
     /*
       Used to disable an user
@@ -82,10 +76,10 @@ public class User extends BaseDocument {
         this.displayName = displayName;
         this.socialType = socialType;
         this.signUpConfirmed = isSignUpConfirmed;
-        this.isResetPassword = isResetPassword;
         this.enabled = enabled;
         this.authorities = authorities;
         this.gender = gender;
         this.profileImageUrl = profileImageUrl;
     }
+
 }

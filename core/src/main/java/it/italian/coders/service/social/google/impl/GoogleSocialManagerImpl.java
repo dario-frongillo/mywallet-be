@@ -44,7 +44,7 @@ public class GoogleSocialManagerImpl implements GoogleSocialManager{
                     .username(profile.getId())
                     .authorities(authorities)
                     .email(profile.getEmails() == null || profile.getEmails().isEmpty() ? null :profile.getEmails().get(0))
-                    .socialEnum(SocialEnum.Google)
+                    .socialType(SocialEnum.Google)
                     .password(passwordEncoder.encode(USER_SOCIAL_PASSWORD))
                     .firstname(profile.getGivenName())
                     .lastname(profile.getFamilyName())

@@ -74,7 +74,6 @@ public class ResetAccountManagerImpl implements ResetAccountManager {
     public void confirmResetPassword(User user, VerificationToken verificationToken, String newPassord) {
         verificationToken.setStatus(VerificationStatusEnum.CLOSED);
         user.setPassword(passwordEncoder.encode(newPassord));
-        user.setResetPassword(true);
         userDao.save(user);
         verificationTokenDao.save(verificationToken);
     }

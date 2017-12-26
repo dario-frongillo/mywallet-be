@@ -90,7 +90,7 @@ public class FacebookSocialManagerImpl implements FacebookSocialManager {
                     .authorities(authorities)
                     .password(passwordEncoder.encode(USER_SOCIAL_PASSWORD))
                     .firstname(profile.getFirstName())
-                    .socialEnum(SocialEnum.Facebook)
+                    .socialType(SocialEnum.Facebook)
                     .lastname(profile.getLastName())
                     .gender(profile.getGender()==null ? null : GenderEnum.fromSocialValue(profile.getGender()))
                     .displayName(profile.getName())

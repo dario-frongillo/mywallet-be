@@ -54,7 +54,7 @@ public class SignUpController {
                                         0);
         }
 
-        return ResponseEntity.ok(signupManager.signupUser(signup));
+        return ResponseEntity.ok(signupManager.signupUser(signup,request));
     }
 
     @RequestMapping(value = "public/v1/signup/confirm", method = RequestMethod.GET)
